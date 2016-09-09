@@ -1,0 +1,25 @@
+project(net)
+if(WIN32)
+	add_definitions(-DPLATFORM_WIN)
+elseif(APPLE)
+	add_definitions(-DPLATFORM_MAC)
+elseif(UNIX)
+	add_definitions(-DPLATFORM_LINUX)
+endif()
+
+set(HEADER_FILES
+	Socket.h
+)
+Set(SOURCE_FILES)
+
+if(BUILD_TYPE STREQUAL "server")
+	list(APPEND SOURCE_FILES Socket.cpp)
+elseif(BUILD_TYPE STREQUAL "server win")
+	list(APPEND SOURCE_FILES SocketWin.cpp)
+elseif(BUILD_TYPE STREQUAL "client")
+	list(APPEND SOURCE_FILES SocketClient.cpp)
+elseif(BUILD_TYPE STREQUAL "client win")
+	list(APPEND SOURCE_FILES SocketClientWin.cpp)
+endif()
+add_library(libnet ${HEADER_FILES} ${SOURCE_FILES})
+set_target_properties(libnet PROPERTIES OUTPUT_NAME "net")
